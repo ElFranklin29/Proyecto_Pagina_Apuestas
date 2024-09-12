@@ -1,0 +1,35 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    padding: 20px; /* Agrega un poco de relleno para evitar que el formulario toque los bordes */
+}
+.form-container {
+    background-color: #f0f0f0; /* Color de fondo del contenedor */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 900px; /* Ajusta el ancho máximo del contenedor */
+    width: 100%; /* Asegura que el contenedor ocupe el 100% del ancho disponible hasta el max-width */
+}
+.form-floating {
+    margin-bottom: 15px;
+}
+.btn-purple {
+    background-color: #6f42c1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn-purple:hover {
+    background-color: #5a32a3;
+}

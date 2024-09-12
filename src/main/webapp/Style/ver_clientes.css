@@ -1,0 +1,30 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Evita el scroll */
+}
+.container-gray {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 1200px;
+    width: 100%;
+    margin-top: 100px; /* Espacio debajo del header */
+}
+.container-title {
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: bold;
+}
+.table-container {
+    display: flex;
+    justify-content: center;
+}
+.table {
+    width: 100%;
+    font-size: 14px;
+}
+
