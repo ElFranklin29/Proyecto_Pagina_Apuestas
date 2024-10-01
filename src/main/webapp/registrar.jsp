@@ -66,8 +66,7 @@
                             </div>
 
 
-                            <button type="submit" class="btn btn-purple mx-auto d-block mt-3">Registrar</button>
-
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
 
                     </div>
