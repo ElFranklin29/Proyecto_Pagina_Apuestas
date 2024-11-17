@@ -16,4 +16,17 @@ public class ControladoraLogica {
     public List<Cliente> mostrarClientes(){
         return controlPersis.mostrarClientes();
     }
+    
+    public Cliente findClienteByEmail (String email){
+        return controlPersis.findClienteByEmail(email);
+    }
+    
+    public void crearApuesta(Apuesta apuesta){
+        controlPersis.crearApuesta(apuesta);
+    }
+    
+    public List<Apuesta> findApuestasByIdCliente(int id_cliente){
+        return controlPersis.findApuestasByIdCliente(id_cliente);
+    }
+   
 }

@@ -43,14 +43,14 @@
                             <label class="form-label">Apellido:</label>
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" name="apellido" placeholder="Apellido">
-                                <label for="floatingLastName">Apellido</label>
+                                <label for="floatingLastName" >Apellido</label>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="fecha" class="form-label">Selecciona una fecha:</label>
-                                <input type="date" class="form-control" name="fecha_nac" name="fecha">
+                                <input type="date" class="form-control" name="fecha_nac" >
                             </div>
 
                             <label class="form-label">Correo electrónico:</label>

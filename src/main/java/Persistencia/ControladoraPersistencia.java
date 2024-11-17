@@ -1,5 +1,6 @@
 package Persistencia;
 
+import Logica.Apuesta;
 import Logica.Cliente;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
 public class ControladoraPersistencia {
     ApuestaJpaController apuestaJpa = new ApuestaJpaController();
     ClienteJpaController clienteJpa = new ClienteJpaController();
-    PartidoJpaController partidoJpa = new PartidoJpaController();
+    
 
     
     //CLIENTE
@@ -18,5 +19,19 @@ public class ControladoraPersistencia {
     public List<Cliente> mostrarClientes() {
         return clienteJpa.findClienteEntities();
     }
+
+    public Cliente findClienteByEmail(String email) {
+        return clienteJpa.findClienteByEmail(email);
+    }
+
+    public void crearApuesta(Apuesta apuesta) {
+        apuestaJpa.create(apuesta);
+    }
+
+    public List<Apuesta> findApuestasByIdCliente(int id_cliente) {
+        return apuestaJpa.findApuestasByIdCliente(id_cliente);
+    }
+
+    
 
 }

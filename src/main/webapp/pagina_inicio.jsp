@@ -1,3 +1,6 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="APIFutbol.ApiFutbolApuesta"%>
 <%@page import="APIFutbol.ApiFutbol"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="components/navbar_user_log.jsp"%>
@@ -6,159 +9,737 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Inicio</title>
-
         <style>
+            .container-custom {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                padding: 20px;
+                margin-top: 20px;
+            }
+
+            .container-custom h1 {
+                font-size: 2.5rem;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .highlight {
+                color: #8600C6;
+            }
+
+            /* Estructura de la card con dos columnas */
+            .team-info {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                max-width: 800px;
+                margin: 10 px 30px;
+
+            }
+
+            /* Columna izquierda con nombres y vs */
+            .team-names {
+                display: flex;
+                flex-direction: column;
+                text-align: left;
+                max-width: 250px ;
+                margin-left: 7rem;
+            }
+
+            .team-name {
+                font-size: 1.7rem;
+                font-weight: 700;
+                margin-bottom: 5px;
+            }
+
+            .vs-time {
+                font-size: 1.5rem;
+                font-weight: 600;
+                text-align: left;
+                margin-bottom: 5px;
+                margin-left: 3rem;
+            }
+
+            .team-info-item {
+                display: flex;
+                align-items: center;
+                margin-bottom: 5px;
+            }
+
+            .team-logo {
+                width: 40px;  /* Ajusta el tamaño del escudo */
+                height: 40px;
+                margin-right: 10px;  /* Espacio entre el escudo y el nombre */
+            }
+
+            /* Columna derecha con marcadores y multiplicadores */
+            .team-scores {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                text-align: right;
+                margin-right: 9rem;
+
+            }
+
+            .score-row {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+
+            .team-score {
+                font-size: 1.8rem;
+                font-weight: 600;
+                margin-right: 20px;
+            }
+
+            .multiplier-btn {
+                font-size: 1.3rem;
+                border-radius: 2.5px;
+                padding: 1px 15px;
+            }
+
+            .btn-outline {
+                background-color: #4A235A;
+                border-color: #4A235A;
+                color: white;
+            }
+
+            .btn-outline:hover {
+                background-color: white;
+                color: #4A235A;
+                border-color: #4A235A;
+            }
+
             .card {
                 width: 90%;
-                margin: auto;
-                display: flex;
-                justify-content: center; /* Centrar horizontalmente */
-                align-items: center;    /* Centrar verticalmente */
-                /* Establecer altura del contenedor */
+                max-width: 850px;
+                margin-bottom: 20px;
+            }
 
-            }
-            .team {
-                font-size: 1.5rem;
-                font-weight: bold;
-            }
-            .vs {
-                text-align: left;
-                font-size: 1.2rem;
-                margin: 10px 0;
-            }
-            .info{
-                background-color: red;
-                display: grid;
-                grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
-                grid-template-rows: auto auto;  /* Dos filas automáticas */
-                gap: 10px;                      /* Espacio entre las filas y columnas */
-                background-color: lightgray;
+            .card-body {
+                border: 1px solid black;
                 padding: 20px;
             }
 
-
-            .container {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 90vh;
-                padding: 20px; /* Agrega un poco de relleno para evitar que el formulario toque los bordes */
-            }
-            .info-container {
-                background-color: #f0f0f0; /* Color de fondo del contenedor */
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                max-width: 900px; /* Ajusta el ancho máximo del contenedor */
-                width: 100%; /* Asegura que el contenedor ocupe el 100% del ancho disponible hasta el max-width */
+            .card-footer {
+                background-color: #4A235A;
+                color: white !important;
+                padding: 5px;
             }
         </style>
     </head>
     <body>
-        <h1>Esta es la pagina principal;)</h1>
+
+        <!-- Partidos La Liga-->
+
+        <div class="container-custom">
+            <h1>Partidos <span class="highlight">La Liga</span></h1>
 
 
-        <div class="card border-primary p-3">
+            <%
 
-            <div class="info">
-                <div class="team">Equipo Local</div>
-                <div class="vs">vs</div>
-                <div class="team">Equipo Visitante</div>
+                ApiFutbol api = new ApiFutbol();
+                api.FechaActual();
+                api.llamarEndpoint();
+                api.equipoLocal();
+
+                api.equipoVisitante();
+                api.goalsEquipoLocal();
+                api.goalsEquipoVisitante();
+                api.LogoEquipoLocal();
+                api.LogoEquipoVisitante();
+                api.obtenerIdLiga();
+                api.fechaPartido();
+
+                for (int i = 0; i < api.getJsonArrayHomeName().length(); i++) {
+                    if (api.getJsonArrayLeague().getString(i).equals("140")) {
+
+
+            %>
+
+            <div class="card text-center mt-4">
+                <div class="card-body">
+                    <form action="SvDescripcionApuesta" method="GET">      
+                        <div class="team-info">
+
+                            <!-- Columna izquierda con nombres y vs -->
+                            <div class="team-names">
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoHome().getString(i)%>" id="logoLocal" alt="Escudo Local" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoLocal" value="<%=api.getJsonArrayLogoHome().getString(i)%>">
+
+                                    <div class="team-name" id="nombreLocal"><%=api.getJsonArrayHomeName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreLocal" value="<%=api.getJsonArrayHomeName().getString(i)%>">
+                                </div>
+                                <div class="vs-time">45'</div>
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoAway().getString(i)%>" id="logoVisitante" alt="Escudo Visitante" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoVisitante" value="<%=api.getJsonArrayLogoAway().getString(i)%>">
+
+                                    <div class="team-name" id="nombreVisitante"><%=api.getJsonArrayAwayName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreVisitante" value="<%=api.getJsonArrayAwayName().getString(i)%>">
+                                </div>
+
+                            </div>
+
+
+                            <!-- Columna derecha con marcadores y multiplicadores -->
+                            <div class="team-scores">
+                                <div class="score-row">
+                                    <div class="team-score" id="golesLocal"><%=api.getJsonArrayHomeGoals().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                   <input type="hidden" name="golesLocal" value="<%=api.getJsonArrayHomeGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn" type="submit">1.80</button>
+
+                                </div>
+                                <div class="score-row">
+                                    <div class="team-score" id="GolesVisitante"><%= api.getJsonArrayAwayGoals().getString(i)%></div>
+                                    <input type="hidden" name="golesVisitante" value="<%= api.getJsonArrayAwayGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn">1.75</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer text-body-secondary">
+
+                </div>
             </div>
+
+            <%}
+                }%>
+
+
+
+            <!-- Partidos Premier League-->
+
+            <h1>Partidos <span class="highlight">Premier League</span></h1>
+
+            <%
+
+                for (int i = 0; i < api.getJsonArrayHomeName().length(); i++) {
+                    if (api.getJsonArrayLeague().getString(i).equals("39")) {
+
+
+            %>
+
+            <div class="card text-center mt-4">
+                <div class="card-body">
+                    <form action="SvDescripcionApuesta" method="GET">      
+                        <div class="team-info">
+
+                            <!-- Columna izquierda con nombres y vs -->
+                            <div class="team-names">
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoHome().getString(i)%>" id="logoLocal" alt="Escudo Local" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoLocal" value="<%=api.getJsonArrayLogoHome().getString(i)%>">
+
+                                    <div class="team-name" id="nombreLocal"><%=api.getJsonArrayHomeName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreLocal" value="<%=api.getJsonArrayHomeName().getString(i)%>">
+                                </div>
+                                <div class="vs-time">45'</div>
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoAway().getString(i)%>" id="logoVisitante" alt="Escudo Visitante" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoVisitante" value="<%=api.getJsonArrayLogoAway().getString(i)%>">
+
+                                    <div class="team-name" id="nombreVisitante"><%=api.getJsonArrayAwayName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreVisitante" value="<%=api.getJsonArrayAwayName().getString(i)%>">
+                                </div>
+
+                            </div>
+
+
+                            <!-- Columna derecha con marcadores y multiplicadores -->
+                            <div class="team-scores">
+                                <div class="score-row">
+                                    <div class="team-score" id="golesLocal"><%=api.getJsonArrayHomeGoals().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                   <input type="hidden" name="golesLocal" value="<%=api.getJsonArrayHomeGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn" type="submit">1.80</button>
+
+                                </div>
+                                <div class="score-row">
+                                    <div class="team-score" id="GolesVisitante"><%= api.getJsonArrayAwayGoals().getString(i)%></div>
+                                    <input type="hidden" name="golesVisitante" value="<%= api.getJsonArrayAwayGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn">1.75</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer text-body-secondary">
+
+                </div>
+            </div>
+
+            <%}
+                }%>
+
+
+
+
+            <!-- Partidos Bundesliga-->
+
+            <h1>Partidos <span class="highlight">Bundesliga</span></h1>
+
+            <%
+
+                for (int i = 0; i < api.getJsonArrayHomeName().length(); i++) {
+                    if (api.getJsonArrayLeague().getString(i).equals("78")) {
+
+
+            %>
+
+            <div class="card text-center mt-4">
+                <div class="card-body">
+                    <form action="SvDescripcionApuesta" method="GET">      
+                        <div class="team-info">
+
+                            <!-- Columna izquierda con nombres y vs -->
+                            <div class="team-names">
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoHome().getString(i)%>" id="logoLocal" alt="Escudo Local" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoLocal" value="<%=api.getJsonArrayLogoHome().getString(i)%>">
+
+                                    <div class="team-name" id="nombreLocal"><%=api.getJsonArrayHomeName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreLocal" value="<%=api.getJsonArrayHomeName().getString(i)%>">
+                                </div>
+                                <div class="vs-time">45'</div>
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoAway().getString(i)%>" id="logoVisitante" alt="Escudo Visitante" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoVisitante" value="<%=api.getJsonArrayLogoAway().getString(i)%>">
+
+                                    <div class="team-name" id="nombreVisitante"><%=api.getJsonArrayAwayName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreVisitante" value="<%=api.getJsonArrayAwayName().getString(i)%>">
+                                </div>
+
+                            </div>
+
+
+                            <!-- Columna derecha con marcadores y multiplicadores -->
+                            <div class="team-scores">
+                                <div class="score-row">
+                                    <div class="team-score" id="golesLocal"><%=api.getJsonArrayHomeGoals().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                   <input type="hidden" name="golesLocal" value="<%=api.getJsonArrayHomeGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn" type="submit">1.80</button>
+
+                                </div>
+                                <div class="score-row">
+                                    <div class="team-score" id="GolesVisitante"><%= api.getJsonArrayAwayGoals().getString(i)%></div>
+                                    <input type="hidden" name="golesVisitante" value="<%= api.getJsonArrayAwayGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn">1.75</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer text-body-secondary">
+
+                </div>
+            </div>
+
+            <%}
+                }%>
+
+            <!-- Partidos Ligue 1-->
+
+            <h1>Partidos <span class="highlight">Ligue 1</span></h1>
+
+            <%
+
+                for (int i = 0; i < api.getJsonArrayHomeName().length(); i++) {
+                    if (api.getJsonArrayLeague().getString(i).equals("61")) {
+
+
+            %>
+
+            <div class="card text-center mt-4">
+                <div class="card-body">
+                    <form action="SvDescripcionApuesta" method="GET">      
+                        <div class="team-info">
+
+                            <!-- Columna izquierda con nombres y vs -->
+                            <div class="team-names">
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoHome().getString(i)%>" id="logoLocal" alt="Escudo Local" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoLocal" value="<%=api.getJsonArrayLogoHome().getString(i)%>">
+
+                                    <div class="team-name" id="nombreLocal"><%=api.getJsonArrayHomeName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreLocal" value="<%=api.getJsonArrayHomeName().getString(i)%>">
+                                </div>
+                                <div class="vs-time">45'</div>
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoAway().getString(i)%>" id="logoVisitante" alt="Escudo Visitante" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoVisitante" value="<%=api.getJsonArrayLogoAway().getString(i)%>">
+
+                                    <div class="team-name" id="nombreVisitante"><%=api.getJsonArrayAwayName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreVisitante" value="<%=api.getJsonArrayAwayName().getString(i)%>">
+                                </div>
+
+                            </div>
+
+
+                            <!-- Columna derecha con marcadores y multiplicadores -->
+                            <div class="team-scores">
+                                <div class="score-row">
+                                    <div class="team-score" id="golesLocal"><%=api.getJsonArrayHomeGoals().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                   <input type="hidden" name="golesLocal" value="<%=api.getJsonArrayHomeGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn" type="submit">1.80</button>
+
+                                </div>
+                                <div class="score-row">
+                                    <div class="team-score" id="GolesVisitante"><%= api.getJsonArrayAwayGoals().getString(i)%></div>
+                                    <input type="hidden" name="golesVisitante" value="<%= api.getJsonArrayAwayGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn">1.75</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer text-body-secondary">
+
+                </div>
+            </div>
+
+            <%}
+                }%>
+
+            <!-- Partidos Serie A-->
+
+            <h1>Partidos <span class="highlight">Serie A</span></h1>
+
+            <%
+
+                for (int i = 0; i < api.getJsonArrayHomeName().length(); i++) {
+                    if (api.getJsonArrayLeague().getString(i).equals("135")) {
+
+
+            %>
+
+            <div class="card text-center mt-4">
+                <div class="card-body">
+                    <form action="SvDescripcionApuesta" method="GET">      
+                        <div class="team-info">
+
+                            <!-- Columna izquierda con nombres y vs -->
+                            <div class="team-names">
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoHome().getString(i)%>" id="logoLocal" alt="Escudo Local" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoLocal" value="<%=api.getJsonArrayLogoHome().getString(i)%>">
+
+                                    <div class="team-name" id="nombreLocal"><%=api.getJsonArrayHomeName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreLocal" value="<%=api.getJsonArrayHomeName().getString(i)%>">
+                                </div>
+                                <div class="vs-time">45'</div>
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoAway().getString(i)%>" id="logoVisitante" alt="Escudo Visitante" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoVisitante" value="<%=api.getJsonArrayLogoAway().getString(i)%>">
+
+                                    <div class="team-name" id="nombreVisitante"><%=api.getJsonArrayAwayName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreVisitante" value="<%=api.getJsonArrayAwayName().getString(i)%>">
+                                </div>
+
+                            </div>
+
+
+                            <!-- Columna derecha con marcadores y multiplicadores -->
+                            <div class="team-scores">
+                                <div class="score-row">
+                                    <div class="team-score" id="golesLocal"><%=api.getJsonArrayHomeGoals().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                   <input type="hidden" name="golesLocal" value="<%=api.getJsonArrayHomeGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn" type="submit">1.80</button>
+
+                                </div>
+                                <div class="score-row">
+                                    <div class="team-score" id="GolesVisitante"><%= api.getJsonArrayAwayGoals().getString(i)%></div>
+                                    <input type="hidden" name="golesVisitante" value="<%= api.getJsonArrayAwayGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn">1.75</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer text-body-secondary">
+
+                </div>
+            </div>
+
+            <%}
+                }%>
+
+
+            <!-- Partidos Liga Argentina-->
+
+            <h1>Partidos <span class="highlight">Liga Argentina</span></h1>
+
+            <%
+
+                for (int i = 0; i < api.getJsonArrayHomeName().length(); i++) {
+                    if (api.getJsonArrayLeague().getString(i).equals("128")) {
+
+
+            %>
+
+            <div class="card text-center mt-4">
+                <div class="card-body">
+                    <form action="SvDescripcionApuesta" method="GET">      
+                        <div class="team-info">
+
+                            <!-- Columna izquierda con nombres y vs -->
+                            <div class="team-names">
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoHome().getString(i)%>" id="logoLocal" alt="Escudo Local" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoLocal" value="<%=api.getJsonArrayLogoHome().getString(i)%>">
+
+                                    <div class="team-name" id="nombreLocal"><%=api.getJsonArrayHomeName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreLocal" value="<%=api.getJsonArrayHomeName().getString(i)%>">
+                                </div>
+                                <div class="vs-time">45'</div>
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoAway().getString(i)%>" id="logoVisitante" alt="Escudo Visitante" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoVisitante" value="<%=api.getJsonArrayLogoAway().getString(i)%>">
+
+                                    <div class="team-name" id="nombreVisitante"><%=api.getJsonArrayAwayName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreVisitante" value="<%=api.getJsonArrayAwayName().getString(i)%>">
+                                </div>
+
+                            </div>
+
+
+                            <!-- Columna derecha con marcadores y multiplicadores -->
+                            <div class="team-scores">
+                                <div class="score-row">
+                                    <div class="team-score" id="golesLocal"><%=api.getJsonArrayHomeGoals().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                   <input type="hidden" name="golesLocal" value="<%=api.getJsonArrayHomeGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn" type="submit">1.80</button>
+
+                                </div>
+                                <div class="score-row">
+                                    <div class="team-score" id="GolesVisitante"><%= api.getJsonArrayAwayGoals().getString(i)%></div>
+                                    <input type="hidden" name="golesVisitante" value="<%= api.getJsonArrayAwayGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn">1.75</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer text-body-secondary">
+
+                </div>
+            </div>
+
+            <%}
+                }%>
+
+
+
+            <!-- Partidos Liga Colombia-->
+
+            <h1>Partidos <span class="highlight">Liga Colombia</span></h1>
+
+            <%
+
+                for (int i = 0; i < api.getJsonArrayHomeName().length(); i++) {
+                    if (api.getJsonArrayLeague().getString(i).equals("239")) {
+
+
+            %>
+
+            <div class="card text-center mt-4">
+                <div class="card-body">
+                    <form action="SvDescripcionApuesta" method="GET">      
+                        <div class="team-info">
+
+                            <!-- Columna izquierda con nombres y vs -->
+                            <div class="team-names">
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoHome().getString(i)%>" id="logoLocal" alt="Escudo Local" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoLocal" value="<%=api.getJsonArrayLogoHome().getString(i)%>">
+
+                                    <div class="team-name" id="nombreLocal"><%=api.getJsonArrayHomeName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreLocal" value="<%=api.getJsonArrayHomeName().getString(i)%>">
+                                </div>
+                                <div class="vs-time">45'</div>
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoAway().getString(i)%>" id="logoVisitante" alt="Escudo Visitante" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoVisitante" value="<%=api.getJsonArrayLogoAway().getString(i)%>">
+
+                                    <div class="team-name" id="nombreVisitante"><%=api.getJsonArrayAwayName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreVisitante" value="<%=api.getJsonArrayAwayName().getString(i)%>">
+                                </div>
+
+                            </div>
+
+
+                            <!-- Columna derecha con marcadores y multiplicadores -->
+                            <div class="team-scores">
+                                <div class="score-row">
+                                    <div class="team-score" id="golesLocal"><%=api.getJsonArrayHomeGoals().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                   <input type="hidden" name="golesLocal" value="<%=api.getJsonArrayHomeGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn" type="submit">1.80</button>
+
+                                </div>
+                                <div class="score-row">
+                                    <div class="team-score" id="GolesVisitante"><%= api.getJsonArrayAwayGoals().getString(i)%></div>
+                                    <input type="hidden" name="golesVisitante" value="<%= api.getJsonArrayAwayGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn">1.75</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer text-body-secondary">
+
+                </div>
+            </div>
+
+            <%}
+                }%>
+
+
+            <h1>Partidos <span class="highlight">en General</span></h1>
+
+            <%
+
+                for (int i = 0; i < api.getJsonArrayHomeName().length(); i++) {
+
+
+            %>
+
+            <div class="card text-center mt-4">
+                <div class="card-body">
+                    <form action="SvDescripcionApuesta" method="GET">      
+                        <div class="team-info">
+
+                            <!-- Columna izquierda con nombres y vs -->
+                            <div class="team-names">
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoHome().getString(i)%>" id="logoLocal" alt="Escudo Local" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoLocal" value="<%=api.getJsonArrayLogoHome().getString(i)%>">
+
+                                    <div class="team-name" id="nombreLocal"><%=api.getJsonArrayHomeName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreLocal" value="<%=api.getJsonArrayHomeName().getString(i)%>">
+                                </div>
+                                <div class="vs-time">45'</div>
+                                <div class="team-info-item">
+                                    <img src="<%=api.getJsonArrayLogoAway().getString(i)%>" id="logoVisitante" alt="Escudo Visitante" class="team-logo">
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="logoVisitante" value="<%=api.getJsonArrayLogoAway().getString(i)%>">
+
+                                    <div class="team-name" id="nombreVisitante"><%=api.getJsonArrayAwayName().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                    <input type="hidden" name="nombreVisitante" value="<%=api.getJsonArrayAwayName().getString(i)%>">
+                                </div>
+
+                            </div>
+
+
+                            <!-- Columna derecha con marcadores y multiplicadores -->
+                            <div class="team-scores">
+                                <div class="score-row">
+                                    <div class="team-score" id="golesLocal"><%=api.getJsonArrayHomeGoals().getString(i)%></div>
+                                    <!-- Pasar datos de DIV a SERVLET -->
+                                   <input type="hidden" name="golesLocal" value="<%=api.getJsonArrayHomeGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn" type="submit">1.80</button>
+
+                                </div>
+                                <div class="score-row">
+                                    <div class="team-score" id="GolesVisitante"><%= api.getJsonArrayAwayGoals().getString(i)%></div>
+                                    <input type="hidden" name="golesVisitante" value="<%= api.getJsonArrayAwayGoals().getString(i)%>">
+
+                                    <button class="btn btn-outline multiplier-btn">1.75</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer text-body-secondary">
+
+                </div>
+            </div>
+
+            <%
+                }%>
+
+
+
+
+
+
+
 
         </div>
 
-        <div class="container">
-            <div class="info-container">
-
-
-
-                <div class="row">
-
-                    <div class="col-md-3">
-
-                        <div class="mb-3">
-                            <h3>Barcelona</h3>
-                        </div> 
-
-
-                    </div>
-
-                    <div class="col-md-3">
-
-                        <div class="mb-3">
-                            <h3>1.75</h3>
-                        </div> 
-
-
-                    </div>
-
-                </div>
-                
-                
-                <div class="row">
-
-                    <div class="col-md">
-
-                        <div class="mb-1">
-                            <h3>95' vs</h3> 
-                        </div> 
-
-                    </div>
-
-                    <div class="col-md">
-
-                        <div class="mb-3">
-                            
-                        </div> 
-
-                    </div>
-                </div>
-                
-                <div class="row">
-
-                    <div class="col-md-3">
-
-                        <div class="mb-3">
-                            <h3>Real Madrid</h3>
-                        </div> 
-
-
-                    </div>
-
-                    <div class="col-md-3">
-
-                        <div class="mb-3">
-                            <h3>1.90</h3>
-                        </div> 
-
-
-                    </div>
-
-                </div>
-                
-
-            </div>
-
-        </div>
-
-
-
-
-
-        <!-- 
-        <%
-            ApiFutbol api = new ApiFutbol();
-            String nombreEquipoLocal;
-            api.equipoLocal();
-
-            for (int i = 0; i < api.getJsonArrayHomeName().length(); i++) {
-
-
-        %>
-
-        <h2>Equipos locales: <%=api.getJsonArrayHomeName().getString(i)%></h2>
-        <% }%>
-        -->       
     </body>
 </html>

@@ -1,67 +1,97 @@
-
 package Logica;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Apuesta implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id_apuesta;
-    private int cuota_local;
-    private int cuota_visitante;
-    private int resultado_apuesta;
-    private int estado_apuesta;
-    private int pago_apuesta;
-    
-    @OneToOne
-    private Partido partido;
-    
-    @ManyToOne
-    @JoinColumn(name="id_cliente")
-    private Cliente client;
+    private float cuota_apuesta;
+    private String resultado_apuesta;
+    private String equipo_local;
+    private String equipo_visitante;
+    private float pago_apuesta;
+    private int id_cliente;
+    private String resultado_apostado;
+    private int cantidad_apostar;
+   
 
     public Apuesta() {
     }
 
-    public Apuesta(int id_apuesta, int cuota_local, int cuota_visitante, int resultado_apuesta, int estado_apuesta, int pago_apuesta, Partido partido, Cliente client) {
+    public Apuesta(int id_apuesta, float cuota_apuesta, String resultado_apuesta, String equipo_local, String equipo_visitante, float pago_apuesta, int id_cliente, String resultado_apostado, int cantidad_apostar) {
         this.id_apuesta = id_apuesta;
-        this.cuota_local = cuota_local;
-        this.cuota_visitante = cuota_visitante;
+        this.cuota_apuesta = cuota_apuesta;
         this.resultado_apuesta = resultado_apuesta;
-        this.estado_apuesta = estado_apuesta;
+        this.equipo_local = equipo_local;
+        this.equipo_visitante = equipo_visitante;
         this.pago_apuesta = pago_apuesta;
-        this.partido = partido;
-        this.client = client;
+        this.id_cliente = id_cliente;
+        this.resultado_apostado = resultado_apostado;
+        this.cantidad_apostar = cantidad_apostar;
     }
-
-    public Cliente getClient() {
-        return client;
-    }
-
-    public void setClient(Cliente client) {
-        this.client = client;
-    }
-
-    
-
-    public Partido getPartido() {
-        return partido;
-    }
-
-    public void setPartido(Partido partido) {
-        this.partido = partido;
-    }
-
     
     
+    
+    public String getEquipo_local() {
+        return equipo_local;
+    }
+
+    public void setEquipo_local(String equipo_local) {
+        this.equipo_local = equipo_local;
+    }
+
+    public float getCuota_apuesta() {
+        return cuota_apuesta;
+    }
+
+    public void setCuota_apuesta(float cuota_apuesta) {
+        this.cuota_apuesta = cuota_apuesta;
+    }
+
+    public String getEquipo_visitante() {
+        return equipo_visitante;
+    }
+
+    public void setEquipo_visitante(String equipo_visitante) {
+        this.equipo_visitante = equipo_visitante;
+    }
+
+    public String getResultado_apostado() {
+        return resultado_apostado;
+    }
+
+    public void setResultado_apostado(String resultado_apostado) {
+        this.resultado_apostado = resultado_apostado;
+    }
+
+    public int getCantidad_apostar() {
+        return cantidad_apostar;
+    }
+
+    public void setCantidad_apostar(int cantidad_apostar) {
+        this.cantidad_apostar = cantidad_apostar;
+    }
+
+    public int getId_cliente() {
+        return id_cliente;
+    }
+
+    public void setId_cliente(int id_cliente) {
+        this.id_cliente = id_cliente;
+    }
+
+    public void setCuota_apuesta(int cuota_apuesta) {
+        this.cuota_apuesta = cuota_apuesta;
+    }
+
     public int getId_apuesta() {
         return id_apuesta;
     }
@@ -70,46 +100,20 @@ public class Apuesta implements Serializable {
         this.id_apuesta = id_apuesta;
     }
 
-    public int getCuota_local() {
-        return cuota_local;
-    }
-
-    public void setCuota_local(int cuota_local) {
-        this.cuota_local = cuota_local;
-    }
-
-    public int getCuota_visitante() {
-        return cuota_visitante;
-    }
-
-    public void setCuota_visitante(int cuota_visitante) {
-        this.cuota_visitante = cuota_visitante;
-    }
-
-    public int getResultado_apuesta() {
+    public String getResultado_apuesta() {
         return resultado_apuesta;
     }
 
-    public void setResultado_apuesta(int resultado_apuesta) {
+    public void setResultado_apuesta(String resultado_apuesta) {
         this.resultado_apuesta = resultado_apuesta;
     }
 
-    public int getEstado_apuesta() {
-        return estado_apuesta;
-    }
-
-    public void setEstado_apuesta(int estado_apuesta) {
-        this.estado_apuesta = estado_apuesta;
-    }
-
-    public int getPago_apuesta() {
+    public float getPago_apuesta() {
         return pago_apuesta;
     }
 
-    public void setPago_apuesta(int pago_apuesta) {
+    public void setPago_apuesta(float pago_apuesta) {
         this.pago_apuesta = pago_apuesta;
     }
-    
-    
-    
+
 }

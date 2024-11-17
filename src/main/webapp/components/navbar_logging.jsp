@@ -1,3 +1,4 @@
+<%@page import="Logica.Cliente"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,6 +18,8 @@
         </style>
     </head>
     <body>
+        
+      
         <nav class="navbar navbar-purple fixed-top">
             <div class="container-fluid">
                 <a class="navbar-brand" href="iniciar_sesion.jsp">

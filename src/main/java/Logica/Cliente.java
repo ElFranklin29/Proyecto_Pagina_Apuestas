@@ -33,23 +33,13 @@ public class Cliente implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fecha_nac;
     
-    @OneToMany (mappedBy = "client")
-    private List<Apuesta> listaApuestas;
-
+ 
     public Cliente() {
     }
+    
+   
 
-    public Cliente(int id_cliente, int creditos, String tipo_documento, String nombre, String apellido, String correo, String contraseña, Date fecha_nac, List<Apuesta> listaApuestas) {
-        this.id_cliente = id_cliente;
-        this.creditos = creditos;
-        this.tipo_documento = tipo_documento;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.correo = correo;
-        this.contraseña = contraseña;
-        this.fecha_nac = fecha_nac;
-        this.listaApuestas = listaApuestas;
-    }
+
 
     public Cliente(int id_cliente, int creditos, String tipo_documento, String nombre, String apellido, String correo, String contraseña, Date fecha_nac) {
         this.id_cliente = id_cliente;
@@ -96,13 +86,7 @@ public class Cliente implements Serializable {
         this.creditos = creditos;
     }
     
-    public List<Apuesta> getListaApuestas() {
-        return listaApuestas;
-    }
-
-    public void setListaApuestas(List<Apuesta> listaApuestas) {
-        this.listaApuestas = listaApuestas;
-    }
+  
 
     public int getId_cliente() {
         return id_cliente;

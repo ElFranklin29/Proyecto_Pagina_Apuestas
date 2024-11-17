@@ -4,7 +4,6 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>Logica.Apuesta</class>
     <class>Logica.Cliente</class>
-    <class>Logica.Partido</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sitio_apuestas?serverTimezone=UTC"/>

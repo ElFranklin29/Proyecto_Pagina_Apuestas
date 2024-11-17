@@ -18,11 +18,12 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
- 
 
 public class SvCliente extends HttpServlet {
+
     ControladoraLogica controlLogica = new ControladoraLogica();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -34,15 +35,13 @@ public class SvCliente extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-       
+
         List<Cliente> listaClientes = new ArrayList<>();
         listaClientes = controlLogica.mostrarClientes();
-        
-        
+
         HttpSession misesion = request.getSession();
         misesion.setAttribute("listaClientes", listaClientes);
 
-        
         response.sendRedirect("ver_clientes.jsp");
     }
 
@@ -58,25 +57,30 @@ public class SvCliente extends HttpServlet {
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
         String correo = request.getParameter("correo");
-        String contraseña = request.getParameter("contraseña");       
-      
+        String contraseña = request.getParameter("contraseña");
+
         String fechaNacString = request.getParameter("fecha_nac");
-        
+
         // Definir el formato esperado
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        
+
         try {
-            // Convertir String a java.util.Date
-            java.util.Date date = formatter.parse(fechaNacString);
-            cliente.setFecha_nac(date);
+            // Convertir la cadena a LocalDate usando el formato yyyy-MM-dd
+            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate fechaNac = LocalDate.parse(fechaNacString, inputFormatter);
+
+            // Formatear para mostrar en el formato dd/MM/yyyy
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String fechaFormateada = fechaNac.format(outputFormatter);
             
-            
-        } catch (ParseException e) {
+
+            // Convertir LocalDate a java.sql.Date para guardarla en la base de datos
+            cliente.setFecha_nac(java.sql.Date.valueOf(fechaNac));
+
+        } catch (DateTimeParseException e) {
             e.printStackTrace(); // Manejar la excepción en caso de formato incorrecto
         }
-        System.out.println("////////////////////////////////////");
-        System.out.println("fecha: "+cliente.getFecha_nac());
-        
+
 
         cliente.setId_cliente(id);
         cliente.setTipo_documento(tipo_doc);
@@ -85,15 +89,13 @@ public class SvCliente extends HttpServlet {
         cliente.setCorreo(correo);
         cliente.setContraseña(contraseña);
         cliente.setCreditos(100);
-                
+
         controlLogica.crearCliente(cliente);
-        
 
         response.sendRedirect("iniciar_sesion.jsp");
 
-        
         //   System.out.println(id+", "+tipo_doc+", "+nombre+", "+apellido+", "+cliente.getFecha_nac()+", "+
- //              correo+", "+contraseña);
+        //              correo+", "+contraseña);
     }
 
     @Override

@@ -10,8 +10,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
-
 
 public class ClienteJpaController implements Serializable {
 
@@ -23,8 +23,8 @@ public class ClienteJpaController implements Serializable {
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-    
-    public ClienteJpaController(){
+
+    public ClienteJpaController() {
         emf = Persistence.createEntityManagerFactory("SitioApuestasPU");
     }
 
@@ -131,5 +131,23 @@ public class ClienteJpaController implements Serializable {
             em.close();
         }
     }
-    
+
+    public Cliente findClienteByEmail(String email) {
+        EntityManager em = getEntityManager();
+        try {
+            String sql = "SELECT * FROM cliente WHERE correo = ?";
+            Query query = em.createNativeQuery(sql, Cliente.class);
+            query.setParameter(1, email);
+
+            try {
+                return (Cliente) query.getSingleResult();
+            } catch (NoResultException e) {
+                // No result found, return null
+                return null;
+            }
+        } finally {
+            em.close();
+        }
+    }
+
 }
